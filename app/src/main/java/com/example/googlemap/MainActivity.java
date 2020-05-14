@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
+    private static final int FASTEST_UPDATE_INTERVAL_MS =5000; //
 
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity
     private Location location;
 
 
-    private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
-    // (참고로 Toast에서는 Context가 필요했습니다.)
+    private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,13 +116,12 @@ public class MainActivity extends AppCompatActivity
         mMap = googleMap;
 
         //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
-        //지도의 초기위치를 서울로 이동
+        //지도의 초기위치 서울로 지정
         setDefaultLocation();
 
 
 
         //런타임 퍼미션 처리
-        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -133,26 +132,23 @@ public class MainActivity extends AppCompatActivity
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
 
-            // 2. 이미 퍼미션을 가지고 있다면
-            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
 
 
-            startLocationUpdates(); // 3. 위치 업데이트 시작
+            startLocationUpdates(); // 위치업데이트
 
 
-        }else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
+        }else {
 
-            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
-                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+
                 Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
 
-                        // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                        // 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult
                         ActivityCompat.requestPermissions( MainActivity.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
@@ -160,15 +156,12 @@ public class MainActivity extends AppCompatActivity
 
 
             } else {
-                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                // 요청 결과는 onRequestPermissionResult
                 ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
 
         }
-
-
 
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -289,7 +282,7 @@ public class MainActivity extends AppCompatActivity
 
     public String getCurrentAddress(LatLng latlng) {
 
-        //지오코더... GPS를 주소로 변환
+        // GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
@@ -326,6 +319,7 @@ public class MainActivity extends AppCompatActivity
     public boolean checkLocationServicesStatus() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+        assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
@@ -468,7 +462,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    //여기부터는 GPS 활성화를 위한 메소드들
+    //GPS활성화
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -502,7 +496,7 @@ public class MainActivity extends AppCompatActivity
 
             case GPS_ENABLE_REQUEST_CODE:
 
-                //사용자가 GPS 활성 시켰는지 검사
+                //사용자가 GPS 활성 시켰는지 확인
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
 
